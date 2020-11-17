@@ -18,9 +18,13 @@ html, body {
   flex: 0 0 20%;
 }
 .chatroom {
-  flex: 1 1 70%;
+  flex: 1 1 auto;
   display: flex;
   flex-flow: column;
+
+  .chat-list {
+    flex: 1 1 auto;
+  }
 }
 .orgs {
   position: relative;
@@ -46,7 +50,7 @@ html, body {
   padding-bottom: 30px;
 }
 .horizontal-line {
-  border-bottom: 1px solid #3d3d3d;
+  border-bottom: 1px solid #888;
 }
 .list-group {
   list-style: none;
