@@ -1,7 +1,7 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { selectChannel, fetchMessages } from '../actions/index';
+import { fetchMessages } from '../actions/index';
 
 const Message = (props) => {
   const { created_at, author, content } = props.message;
@@ -15,6 +15,14 @@ const Message = (props) => {
       <div className="content">
         {content}
       </div>
+    </div>
+  );
+};
+
+const MessageList = (props) => {
+  return (
+    <div className="chat-list horizontal-line">
+      {props.messages.map(message => <Message key={message.created_at} message={message} />)}
     </div>
   );
 };
@@ -38,21 +46,11 @@ class ChatRoom extends React.Component {
     this.state = {};
   }
 
-  renderChatList = () => {
-    return (
-      <div className="chat-list horizontal-line">
-        <Message message={{ author: "ssaunier", content: "Hellow world!!", created_at: "2020-10-26T20:10:45" }} />
-        <Message message={{ author: "edward", content: "Hi :)", created_at: "2020-10-26T20:11:15" }} />
-        <Message message={{ author: "papillard", content: "How are you guys? Having fun with React and Redux?", created_at: "2020-10-26T20:11:55" }} />
-      </div>
-    );
-  }
-
   render() {
     return (
       <section className="chatroom">
         <h2 className="headers horizontal-line">Channel #general</h2>
-        { this.renderChatList() }
+        <MessageList messages={this.props.messages} />
         <Input />
       </section>
     );
