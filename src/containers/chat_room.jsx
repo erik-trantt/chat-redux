@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { fetchMessages } from '../actions/index';
+import MessageInput from './message_input';
 
 const Message = (props) => {
   const { created_at, author, content } = props.message;
@@ -22,20 +23,7 @@ const Message = (props) => {
 const MessageList = (props) => {
   return (
     <div className="chat-list horizontal-line">
-      {props.messages.map(message => <Message key={message.created_at} message={message} />)}
-    </div>
-  );
-};
-
-const Input = () => {
-  return (
-    <div className="input">
-      <form className="form-inline">
-        <div className="form-row">
-          <input type="text" name="message" className="form-control" id="message-input" />
-          <button type="submit">Send</button>
-        </div>
-      </form>
+      {props.messages.map(message => <Message key={message.id} message={message} />)}
     </div>
   );
 };
@@ -43,7 +31,26 @@ const Input = () => {
 class ChatRoom extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      referesher: null
+    };
+    this.fetchMessages();
+  }
+
+  componentDidMount() {
+    this.referesher = setInterval(this.fetchMessages, 5000);
+  }
+
+  componentDidUpdate() {
+    this.list.scrollTop = this.list.scrollHeight;
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.referesher);
+  }
+
+  fetchMessages = () => {
+    this.props.fetchMessages(this.props.selectedChannel);
   }
 
   render() {
@@ -51,7 +58,7 @@ class ChatRoom extends React.Component {
       <section className="chatroom">
         <h2 className="headers horizontal-line">Channel #general</h2>
         <MessageList messages={this.props.messages} />
-        <Input />
+        <MessageInput />
       </section>
     );
   }
