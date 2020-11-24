@@ -20,14 +20,6 @@ const Message = (props) => {
   );
 };
 
-const MessageList = (props) => {
-  return (
-    <div className="chat-list horizontal-line">
-      {props.messages.map(message => <Message key={message.id} message={message} />)}
-    </div>
-  );
-};
-
 class ChatRoom extends React.Component {
   constructor(props) {
     super(props);
@@ -56,8 +48,11 @@ class ChatRoom extends React.Component {
   render() {
     return (
       <section className="chatroom">
-        <h2 className="headers horizontal-line">Channel #general</h2>
-        <MessageList messages={this.props.messages} />
+        <h2 className="headers horizontal-line">Channel #{this.props.selectedChannel}</h2>
+        <div className="chat-list horizontal-line" ref={(list) => { this.list = list; }}>
+          {this.props.messages.map(message => <Message key={message.id} message={message} />)}
+        </div>
+
         <MessageInput />
       </section>
     );
